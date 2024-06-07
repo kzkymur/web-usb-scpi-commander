@@ -1,0 +1,3 @@
+[submodule "lib"]
+	path = lib
+	url = git@github.com:Seeed-Studio/Seeed_MCP9600.git
