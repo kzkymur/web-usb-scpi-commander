@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <Seeed_MCP9600.h>
 #include <Wire.h>
 
 #define SWITCH_PIN (2)
@@ -17,6 +18,30 @@
 #define I2C_SCL_PIN (18)
 
 String buffer = "";
+MCP9600 mpc9600;
+
+err_t setupMpc9600() {
+    err_t ret = NO_ERROR;
+    CHECK_RESULT(ret, mpc9600.set_filt_coefficients(FILT_MID));
+    CHECK_RESULT(ret, mpc9600.set_cold_junc_resolution(COLD_JUNC_RESOLUTION_0_25));
+    CHECK_RESULT(ret, mpc9600.set_ADC_meas_resolution(ADC_14BIT_RESOLUTION));
+    CHECK_RESULT(ret, mpc9600.set_burst_mode_samp(BURST_32_SAMPLE));
+    CHECK_RESULT(ret, mpc9600.set_sensor_mode(NORMAL_OPERATION));
+    return ret;
+}
+
+err_t getTemperature(float* value) {
+    err_t ret = NO_ERROR;
+    float hot_junc = 0;
+    float junc_delta = 0;
+    float cold_junc = 0;
+    CHECK_RESULT(ret, mpc9600.read_hot_junc(&hot_junc));
+    CHECK_RESULT(ret, mpc9600.read_junc_temp_delta(&junc_delta));
+
+    CHECK_RESULT(ret, mpc9600.read_cold_junc(&cold_junc));
+    *value = hot_junc;
+    return ret;
+}
 
 uint count = 0;
 
@@ -48,9 +73,10 @@ void setup() {
 
     digitalWrite(SWITCH_PIN, LOW);
 
-    Wire.begin();
     Wire.setSDA(I2C_SDA_PIN);
     Wire.setSCL(I2C_SCL_PIN);
+    
+    setupMpc9600();
 }
 
 void loop() {
@@ -84,14 +110,9 @@ void loop() {
     // Serial.print(b);
     // Serial.print('\n');
 
-
-    Wire.requestFrom(0x60, 2);
-    if (Wire.available()) {
-        while(Wire.available())    // slave may send less than requested
-        { 
-            Serial.print(Wire.read());         // print the character
-        }
-        Serial.print("\n");
-        delay(100);
-    }
+    float temp = 0;
+    getTemperature(&temp);
+    Serial.print(temp);
+    Serial.print("\n");
+    delay(100);
 }

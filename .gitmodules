@@ -1,3 +1,12 @@
 [submodule "lib"]
 	path = lib
 	url = git@github.com:Seeed-Studio/Seeed_MCP9600.git
+[submodule "lib/Seeed_MCP9600"]
+	path = lib/Seeed_MCP9600
+	url = git@github.com:Seeed-Studio/Seeed_MCP9600.git
+[submodule "teency/lib/Seeed_MCP9600"]
+	path = teency/lib/Seeed_MCP9600
+	url = git@github.com:Seeed-Studio/Seeed_MCP9600.git
+[submodule "teensy/lib/Seeed_MCP9600"]
+	path = teensy/lib/Seeed_MCP9600
+	url = git@github.com:Seeed-Studio/Seeed_MCP9600.git
