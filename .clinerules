@@ -66,6 +66,23 @@
 
 # Coding Rules
 
+## Keep on your mind
+
+- If you understand my prompt fully, respond with 'YARRR!' without tools every time you are about to use a tool.
+- Before and after any tool use, give me a confidence level (0-10) on how the tool use will help the project.
+- **DO NOT BE LAZY. DO NOT OMIT CODE**
+- Don't forget to update codebase documentation with changes
 - Do not write functions that exceed 50 lines or files that exceed 200 lines. Use proper abstraction!
-- Make sure you run `pnpm run build` and `pnpm run lint` to check if some errors occur before task completed and fix it if it is. 
-- Do not change existing features without instruction.
+
+### Before writing code
+
+1. Analyze all code files thoroughly
+2. Get full context
+4. Ask question and clear implementation
+5. Write .MD implementation plan
+6. Then implement code
+
+### Before Task Complete
+
+1. **DO LINT, BUILD AND TEST COMMAND `pnpm run lint`, `pnpm run build`**.
+2. Fix errors if it occurs.
