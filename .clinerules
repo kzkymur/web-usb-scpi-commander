@@ -1,0 +1,71 @@
+# Application Abstract
+
+## About
+
+- The application we are developping is a SPA that sends commands to some device via Serial communication through Web Serial API.
+
+## Features
+
+### Set Serial Device
+
+- Ability to set the serial device to which commands are sent.
+- User can browse and select a list of devices from a select box
+
+### Send Command via Web Serial API
+
+- Sending commands via the Web Serial API has a life cycle.
+- The lifecycle is usually executed at 0.5-second intervals, and the request to be processed is selected and processed each time.
+- Sending commands is only executed by `writer.write(data)`.
+
+### Sync with LocalStorage
+
+- All settings are synchronized in local storage as well as in a single JSON object.
+- So they are retained even after reloading.
+- In the future, we plan to implement the following features
+    - Save multiple settings and switch between them at one touch of a button
+    - Export/import JSON files for export/import of settings.
+
+### Modes
+
+- The application implements several modes depending on how the commands are sent
+
+1. Key Mode
+    - Commands are sent by pressing keys on the PC keyboard
+    - It is also possible to specify which command is executed by pressing which key.
+    - Pressing multiple keys at the same time will cause all commands to be executed sequentially
+    - Of course, as long as a key is held down, the command will continue to be sent according to its lifecycle. 
+
+2. Schedule Mode (Timer Mode)
+    - Scheduling commands in advance and in what order they are to be executed.
+    - Specifically, users can fill a queue with commands, execution time, etc., and press the Start button to execute them.
+    - Execution can be interrupted at any time during execution by pressing the stop button.
+    - The following specifications are envisioned for the future
+        - The progress of the task can be checked on the sequence bar.
+        - Multiple queues can be started and multiple commands can be executed at the same time.
+
+# System Architecture
+
+## Libraries
+
+- Languages and libraries to be used are
+  - TypeScript
+  - React
+  - Zustand
+  - Styled Components
+  - Matrial UI
+  - pnpm
+  - Vite
+
+## UI Design
+
+- Due to the character of this application, only the PC layout needs to be considered, and we expect a UI that is not just a web service, but rather a management screen, where the layout is not corrupted and the arrangement does not change depending on the state of the application.
+- Layout is combined with Header, Sidebar and Main.
+  - Header just shows general status.
+  - Sidebar works as general settings panel including mode setting.
+  - Main is mode indivisual setting.
+
+# Coding Rules
+
+- Do not write functions that exceed 50 lines or files that exceed 200 lines. Use proper abstraction!
+- Make sure you run `pnpm run build` and `pnpm run lint` to check if some errors occur before task completed and fix it if it is. 
+- Do not change existing features without instruction.

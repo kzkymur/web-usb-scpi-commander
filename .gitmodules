@@ -1,3 +1,6 @@
 [submodule "teensy/lib/Seeed_MCP9600"]
 	path = teensy/lib/Seeed_MCP9600
 	url = git@github.com:Seeed-Studio/Seeed_MCP9600.git
+[submodule "teency/lib/VL53L0X"]
+	path = teency/lib/VL53L0X
+	url = https://github.com/pololu/vl53l0x-arduino

@@ -15,11 +15,6 @@
 String buffer = "";
 MCP9600 mpc9600;
 
-#define LOOP_TIME (50)
-#define LED_FLUSHING_TIME (10000) // it is a multiple of LOOP_TIME
-
-int led_flush_counter = 0;
-
 err_t setupMpc9600() {
     err_t ret = NO_ERROR;
     CHECK_RESULT(ret, mpc9600.set_filt_coefficients(FILT_MID));
@@ -43,13 +38,22 @@ err_t getTemperature(float* value) {
     return ret;
 }
 
+uint count = 0;
+
+// int getCycle(uint cycle) {
+//     return count % cycle * (100 / (cycle - 1));
+// }
+// int zero100ToZero255(uint v) {
+//     return (uint8_t)((float)v / 100 * 255);
+// }
+
 void setup() {
     Serial.begin(9600);
     pinMode(SWITCH_PIN_R, OUTPUT);
     pinMode(SWITCH_PIN_G, OUTPUT);
     pinMode(SWITCH_PIN_B, OUTPUT);
     pinMode(SWITCH_PIN_IR, OUTPUT);
-    
+
     pinMode(TEST_LED, OUTPUT);
 
     Wire.setSDA(I2C_SDA_PIN);
@@ -60,29 +64,18 @@ void setup() {
 }
 
 void loop() {
+    count ++;
 
-    if (led_flush_counter > LED_FLUSHING_TIME / LOOP_TIME) {
-        led_flush_counter = 0;
-        digitalWrite(TEST_LED, LOW);
-        digitalWrite(SWITCH_PIN_G, LOW);
-    } else if (led_flush_counter > 0) {
-        led_flush_counter++;
-    } else if (Serial.available() > 0 ) {
-        String data = Serial.readStringUntil('\n');
-
-        Serial.print("Receive:");
-        Serial.println(data);
-
-        if (data == "S") {
-            led_flush_counter = 1;
-            digitalWrite(TEST_LED, HIGH);
-            digitalWrite(SWITCH_PIN_G, HIGH);
-        }
-    }
+    bool value =  count % 2 == 1 ? HIGH : LOW;
+    // digitalWrite(SWITCH_PIN_R, value);
+    digitalWrite(SWITCH_PIN_G, value);
+    // digitalWrite(SWITCH_PIN_B, value);
+    // digitalWrite(SWITCH_PIN_IR, value);
+    digitalWrite(TEST_LED, value);
 
     float temp = 0;
-    // getTemperature(&temp);
-    // Serial.print(temp);
-    // Serial.print("\n");
-    delay(LOOP_TIME);
+    getTemperature(&temp);
+    Serial.print(temp);
+    Serial.print("\n");
+    delay(1 * 1000);
 }
