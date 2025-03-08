@@ -1,3 +1,4 @@
+import { ImageWbIridescent } from 'material-ui/svg-icons';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -6,6 +7,8 @@ interface SerialState {
   writer: WritableStreamDefaultWriter | null;
   baudRate: number;
   isConnected: boolean;
+  commandQueue: Set<string>;
+  processCommands: () => Promise<void>;
   connect: (baudRate: number) => Promise<void>;
   disconnect: () => Promise<void>;
   setBaudRate: (baudRate: number) => void;
@@ -13,11 +16,21 @@ interface SerialState {
 
 export const useSerialStore = create<SerialState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       port: null,
       writer: null,
       baudRate: 9600,
       isConnected: false,
+      commandQueue: new Set<string>(),
+      processCommands: async () => {
+        const { writer, commandQueue } = get();
+        if (writer && commandQueue.size > 0) {
+          const commands = Array.from(commandQueue).join('\n');
+          console.log(commands)
+          await writer.write(new TextEncoder().encode(commands));
+          commandQueue.clear();
+        }
+      },
       connect: async (baudRate) => {
         try {
           const port = await navigator.serial.requestPort();

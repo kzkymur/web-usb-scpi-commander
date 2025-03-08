@@ -1,5 +1,5 @@
-import { KeyInput } from './KeyInput'
-import { TimerInput } from './TimerInput'
+import { KeyMode } from './KeyMode'
+import { TimerMode } from './TimerMode'
 import { useSettingsStore } from '../store/modeStore'
 
 export const ModeContent = () => {
@@ -9,10 +9,10 @@ export const ModeContent = () => {
     <div>
       {settings.mode === 'key' ? (
         <div>
-          <KeyInput />
+          <KeyMode />
         </div>
       ) : (
-        <TimerInput />
+        <TimerMode />
       )}
     </div>
   )

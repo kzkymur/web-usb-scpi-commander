@@ -3,39 +3,51 @@ import { persist } from 'zustand/middleware';
 
 export type AppMode = 'key' | 'schedule';
 
+interface KeyBinding {
+  id: string;
+  key: string;
+  command: string;
+}
+
 interface AppSettings {
   mode: AppMode;
   seconds: number;
-  r: { key: string; command: string };
-  g: { key: string; command: string };
-  b: { key: string; command: string };
+  keyBindings: KeyBinding[];
 }
 
 interface SettingsStore {
   settings: AppSettings;
   setSettings: (newSettings: Partial<AppSettings>) => void;
   setMode: (mode: AppMode) => void;
+  updateKeyBinding: (id: string, binding: Partial<KeyBinding>) => void;
 }
 
 const initialSettings: AppSettings = {
   mode: 'key',
   seconds: 5,
-  r: { key: 'r', command: '' },
-  g: { key: 'g', command: '' },
-  b: { key: 'b', command: '' },
+  keyBindings: [],
 };
 
 export const useSettingsStore = create<SettingsStore>()(
   persist(
     (set) => ({
       settings: initialSettings,
-      setSettings: (newSettings) => 
-        set((state) => ({ 
-          settings: { ...state.settings, ...newSettings } 
+      setSettings: (newSettings) =>
+        set((state) => ({
+          settings: { ...state.settings, ...newSettings }
         })),
-      setMode: (mode) => 
+      setMode: (mode) =>
         set((state) => ({
           settings: { ...state.settings, mode }
+        })),
+      updateKeyBinding: (id, binding) =>
+        set((state) => ({
+          settings: {
+            ...state.settings,
+            keyBindings: state.settings.keyBindings.map(b =>
+              b.id === id ? {...b, ...binding} : b
+            )
+          }
         })),
     }),
     {

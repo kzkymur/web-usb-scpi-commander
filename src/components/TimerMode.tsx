@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSettingsStore } from '../store/modeStore';
 import { useSerialStore } from '../store/serialStore';
 
-export const TimerInput = () => {
+export const TimerMode = () => {
   const { settings, setSettings } = useSettingsStore();
   const [isRunning, setIsRunning] = useState(false);
   const { writer } = useSerialStore();
@@ -12,7 +12,7 @@ export const TimerInput = () => {
     if (!isRunning && writer) {
       setIsRunning(true);
       intervalId = window.setInterval(async () => {
-        await writer.write(new TextEncoder().encode(settings.r.command + '\n'));
+        await writer.write(new TextEncoder().encode(settings.keyBindings + '\n'));
       }, settings.seconds * 1000);
     }
   };
