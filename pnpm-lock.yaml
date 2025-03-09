@@ -11,6 +11,9 @@ dependencies:
   '@emotion/styled':
     specifier: ^11.14.0
     version: 11.14.0(@emotion/react@11.14.0)(@types/react@18.2.79)(react@18.2.0)
+  '@mui/icons-material':
+    specifier: ^6.4.7
+    version: 6.4.7(@mui/material@6.4.6)(@types/react@18.2.79)(react@18.2.0)
   '@mui/material':
     specifier: ^6.4.6
     version: 6.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.2.79)(react-dom@18.2.0)(react@18.2.0)
@@ -579,6 +582,23 @@ packages:
 
   /@mui/core-downloads-tracker@6.4.6:
     resolution: {integrity: sha512-rho5Q4IscbrVmK9rCrLTJmjLjfH6m/NcqKr/mchvck0EIXlyYUB9+Z0oVmkt/+Mben43LMRYBH8q/Uzxj/c4Vw==}
+    dev: false
+
+  /@mui/icons-material@6.4.7(@mui/material@6.4.6)(@types/react@18.2.79)(react@18.2.0):
+    resolution: {integrity: sha512-Rk8cs9ufQoLBw582Rdqq7fnSXXZTqhYRbpe1Y5SAz9lJKZP3CIdrj0PfG8HJLGw1hrsHFN/rkkm70IDzhJsG1g==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      '@mui/material': ^6.4.7
+      '@types/react': ^17.0.0 || ^18.0.0 || ^19.0.0
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.26.9
+      '@mui/material': 6.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.2.79)(react-dom@18.2.0)(react@18.2.0)
+      '@types/react': 18.2.79
+      react: 18.2.0
     dev: false
 
   /@mui/material@6.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.2.79)(react-dom@18.2.0)(react@18.2.0):

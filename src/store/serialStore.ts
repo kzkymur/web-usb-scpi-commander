@@ -1,4 +1,3 @@
-import { ImageWbIridescent } from 'material-ui/svg-icons';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -26,9 +25,7 @@ export const useSerialStore = create<SerialState>()(
         const { writer, commandQueue } = get();
         if (writer && commandQueue.size > 0) {
           const commands = Array.from(commandQueue).join('\n');
-          console.log(commands)
           await writer.write(new TextEncoder().encode(commands));
-          commandQueue.clear();
         }
       },
       connect: async (baudRate) => {

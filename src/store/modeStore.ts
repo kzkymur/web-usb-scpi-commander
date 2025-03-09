@@ -20,6 +20,8 @@ interface SettingsStore {
   setSettings: (newSettings: Partial<AppSettings>) => void;
   setMode: (mode: AppMode) => void;
   updateKeyBinding: (id: string, binding: Partial<KeyBinding>) => void;
+  addKeyBinding: () => void;
+  removeKeyBinding: (id: string) => void;
 }
 
 const initialSettings: AppSettings = {
@@ -47,6 +49,23 @@ export const useSettingsStore = create<SettingsStore>()(
             keyBindings: state.settings.keyBindings.map(b =>
               b.id === id ? {...b, ...binding} : b
             )
+          }
+        })),
+      addKeyBinding: () =>
+        set((state) => ({
+          settings: {
+            ...state.settings,
+            keyBindings: [
+              ...state.settings.keyBindings,
+              { id: Date.now().toString(), key: '', command: '' }
+            ]
+          }
+        })),
+      removeKeyBinding: (id) =>
+        set((state) => ({
+          settings: {
+            ...state.settings,
+            keyBindings: state.settings.keyBindings.filter(b => b.id !== id)
           }
         })),
     }),
