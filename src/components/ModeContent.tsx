@@ -1,5 +1,5 @@
 import { KeyMode } from './KeyMode'
-import { TimerMode } from './TimerMode'
+import { ScheduleMode } from './ScheduleMode';
 import { useSettingsStore } from '../store/modeStore'
 
 export const ModeContent = () => {
@@ -12,7 +12,7 @@ export const ModeContent = () => {
           <KeyMode />
         </div>
       ) : (
-        <TimerMode />
+        <ScheduleMode />
       )}
     </div>
   )

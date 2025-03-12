@@ -11,6 +11,9 @@ dependencies:
   '@emotion/styled':
     specifier: ^11.14.0
     version: 11.14.0(@emotion/react@11.14.0)(@types/react@18.2.79)(react@18.2.0)
+  '@kzkymur/sequencer':
+    specifier: ^1.0.0
+    version: 1.0.0
   '@mui/icons-material':
     specifier: ^6.4.7
     version: 6.4.7(@mui/material@6.4.6)(@types/react@18.2.79)(react@18.2.0)
@@ -578,6 +581,10 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+    dev: false
+
+  /@kzkymur/sequencer@1.0.0:
+    resolution: {integrity: sha512-2/cN6FixPetFeX+mllsc3B0feu9oUMepU6f5JxF93hBLpKDlZv2m9o8WUex2fBYyK87eEfgapixAuGS2jbKKwA==}
     dev: false
 
   /@mui/core-downloads-tracker@6.4.6:
