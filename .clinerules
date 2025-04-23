@@ -2,18 +2,18 @@
 
 ## About
 
-- The application we are developping is a SPA that sends commands to some device via Serial communication through Web Serial API.
+- The application we are developping is a SPA that sends commands to some device via SCPI protocol through Web USB API.
 
 ## Features
 
-### Set Serial Device
+### Set USB Device
 
-- Ability to set the serial device to which commands are sent.
+- Ability to set the USB device to which commands are sent.
 - User can browse and select a list of devices from a select box
 
-### Send Command via Web Serial API
+### Send SCPI Command via Web USB API
 
-- Sending commands via the Web Serial API has a lifecycle.
+- Sending commands via the Web USB API has a lifecycle.
 - The lifecycle is usually executed at 0.5-second intervals, and the request to be processed is selected and processed each time.
 - Sending commands is only executed by `writer.write(data)`.
 
@@ -29,14 +29,14 @@
 
 - The application implements several modes depending on how the commands are sent
 
-#### Key Mode
+#### Keypress Mode
 
 - Commands are sent by pressing keys on the PC keyboard
 - It send commands continuously while keys are being pressed.
 - It is also possible to specify which command is executed by pressing which key.
 - Pressing multiple keys at the same time will cause all commands to be executed simultaneously.
 
-#### Schedule Mode (Timer Mode)
+#### Schedule Mode
 
 - Scheduling commands in advance and in what order they are to be executed.
 - Specifically, users can fill a queue with commands, execution time, etc., and press the Start button to execute them.
@@ -44,6 +44,7 @@
 - The following specifications are envisioned for the future
     - The progress of the task can be checked on the sequence bar.
     - Multiple queues can be started and multiple commands can be executed at the same time.
+- These features should be implemented with `@kzkymur/sequencer` librarie's Independent Mode.
 
 # System Architecture
 
@@ -55,14 +56,40 @@
   - Zustand
   - Styled Components
   - Matrial UI
+  - @kzkymur/sequencer
+    - The README file of this original library is `docs/sequencer-readme.md`.
   - pnpm
   - Vite
+
+## Key Files 
+
+### `src/store/general.ts`
+
+- This file uses zustand and store general status
+- For example
+  - lifecycleSpan: number;
+  - mode: "keypress" | "schedule";
+  - sidebarWidth: number;
+  - device: USBDevice;
+- All primitive values are stored in localstorage via the persist feature of zustand.
+
+### `src/web-usb-scpi.ts`
+
+- This file has a minimum function-set to handle USB Devices.
+- You can get a SCPIDevice object via calling `connectToDevice` function and send SCPI Command.
+
+### `src/command-sender-worker.ts`
+
+- This file provides command-sending lifecycle.
+- Concretely, you can set some commands to send next lifecycle event through SCPIDevice interface.
+- Each modes, keypress mode and schedule mode, use this `addCommander` method to operate USB devices.
+  - The only deference is the timing to call the method.
 
 ## UI Design
 
 - Due to the character of this application, only the PC layout needs to be considered, and we expect a UI that is not just a web service, but rather a management screen, where the layout is not corrupted and the arrangement does not change depending on the state of the application.
 - Layout is combined with Header, Sidebar and Main.
-  - Header just shows general status.
+  - Header just shows general status stored in `src/store/general.ts` file.
   - Sidebar works as general settings panel including mode setting.
   - Main is mode indivisual setting.
 
@@ -73,6 +100,9 @@
 - If you understand my prompt fully, respond with 'YARRR!' without tools every time you are about to use a tool.
 - Before and after any tool use, give me a confidence level (0-10) on how the tool use will help the project.
 - **DO NOT BE LAZY. DO NOT OMIT CODE**
+-	Be mindful to write pure functions that are self‑contained within their scope and have no side effects.
+-	Implement all side‑effect‑free functions as arrow functions.
+-	If you absolutely must write a function with side effects, carefully consider using a traditional function declaration or leveraging Zustand.
 - Don't forget to update codebase documentation with changes
 - Do not write functions that exceed 50 lines or files that exceed 200 lines. Use proper abstraction!
 

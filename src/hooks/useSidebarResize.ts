@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useLocalStorage } from './useLocalStorage';
+import { create } from 'zustand';
 
-export const useSidebarResize = () => {
-  const [sidebarWidth, setSidebarWidth] = useLocalStorage<number>('sidebar-width', 250);
+export const useSidebarResize = create(() => {
+  const [sidebarWidth, setSidebarWidth] = useState<number>(250);
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
@@ -32,4 +32,4 @@ export const useSidebarResize = () => {
   };
 
   return { sidebarWidth, handleMouseDown };
-};
+});

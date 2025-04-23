@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 import { Layout } from './components/Layout'
-import { ModeContent } from './components/ModeContent'
-import { useSettingsStore } from './store/modeStore'
 
 export const Container = styled.div`
   display: grid;
@@ -31,30 +29,17 @@ export const Title = styled.h1`
   font-size: 1.5rem;
 `;
 
-export const Footer = styled.footer`
-  grid-area: footer;
-  background: #2c3e50;
-  color: white;
-  padding: 1rem;
-  text-align: center;
-`;
-
 function App() {
-  const { settings } = useSettingsStore();
-
   return (
     <Container id="main-container">
       <Header>
-        <Title>Serial Command Sender</Title>
+        <Title>LED Operator</Title>
       </Header>
 
       <Layout>
-        <ModeContent />
+        <></>
       </Layout>
 
-      <Footer>
-        Status: {settings.mode === 'key' ? 'Ready' : 'Idle'}
-      </Footer>
     </Container>
   )
 }

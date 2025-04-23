@@ -1,6 +1,8 @@
 import styled from 'styled-components'
-import { ModeSelection } from './ModeSelection'
-import SerialSettings from './SerialSettings';
+import { SettingsPanel } from './SettingsPanel'
+import { useGeneralStatus } from '../store/general';
+import KeypressSettings from './KeypressSettings';
+import ScheduleSetting from './ScheduleSettings';
 
 const Sidebar = styled.aside`
   grid-area: sidebar;
@@ -10,6 +12,9 @@ const Sidebar = styled.aside`
   min-width: 200px;
   resize: horizontal;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 const Main = styled.main`
@@ -19,13 +24,28 @@ const Main = styled.main`
 `;
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { mode } = useGeneralStatus();
+
+  const renderModeContent = () => {
+    switch (mode) {
+      case 'keypress':
+        return <KeypressSettings />;
+      case 'schedule':
+        return <ScheduleSetting />;
+      default:
+        return <div>Select a mode from the sidebar</div>;
+    }
+  };
+
   return (
     <>
       <Sidebar>
-        <ModeSelection />
-        <SerialSettings />
+        <SettingsPanel />
       </Sidebar>
-      <Main>{children}</Main>
+      <Main>
+        {renderModeContent()}
+        {children}
+      </Main>
     </>
   );
 };

@@ -12,8 +12,8 @@ dependencies:
     specifier: ^11.14.0
     version: 11.14.0(@emotion/react@11.14.0)(@types/react@18.2.79)(react@18.2.0)
   '@kzkymur/sequencer':
-    specifier: ^1.0.0
-    version: 1.0.0
+    specifier: ^1.0.3
+    version: 1.0.3
   '@mui/icons-material':
     specifier: ^6.4.7
     version: 6.4.7(@mui/material@6.4.6)(@types/react@18.2.79)(react@18.2.0)
@@ -55,6 +55,9 @@ devDependencies:
   '@types/react-redux':
     specifier: ^7.1.34
     version: 7.1.34
+  '@types/w3c-web-usb':
+    specifier: ^1.0.10
+    version: 1.0.10
   '@typescript-eslint/eslint-plugin':
     specifier: ^7.2.0
     version: 7.7.0(@typescript-eslint/parser@7.7.0)(eslint@8.57.0)(typescript@5.4.5)
@@ -583,8 +586,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.5.0
     dev: false
 
-  /@kzkymur/sequencer@1.0.0:
-    resolution: {integrity: sha512-2/cN6FixPetFeX+mllsc3B0feu9oUMepU6f5JxF93hBLpKDlZv2m9o8WUex2fBYyK87eEfgapixAuGS2jbKKwA==}
+  /@kzkymur/sequencer@1.0.3:
+    resolution: {integrity: sha512-0GbLs03+DGyJB5ce0Go/SBFekJSIDQ7Wj8jlO3C7jWR+uoIcfNzEM9aQ+2xxNF0q6JcmQ0XIkM2RRXYzkxN6EA==}
     dev: false
 
   /@mui/core-downloads-tracker@6.4.6:
@@ -1108,6 +1111,10 @@ packages:
   /@types/w3c-web-serial@1.0.6:
     resolution: {integrity: sha512-5IlDdQ2C56sCVwc7CUlqT9Axxw+0V/FbWRbErklYIzZ5mKL9s4l7epXHygn+4X7L2nmAPnVvRl55XUVo0760Rg==}
     dev: false
+
+  /@types/w3c-web-usb@1.0.10:
+    resolution: {integrity: sha512-CHgUI5kTc/QLMP8hODUHhge0D4vx+9UiAwIGiT0sTy/B2XpdX1U5rJt6JSISgr6ikRT7vxV9EVAFeYZqUnl1gQ==}
+    dev: true
 
   /@typescript-eslint/eslint-plugin@7.7.0(@typescript-eslint/parser@7.7.0)(eslint@8.57.0)(typescript@5.4.5):
     resolution: {integrity: sha512-GJWR0YnfrKnsRoluVO3PRb9r5aMZriiMMM/RHj5nnTrBy1/wIgk76XCtCKcnXGjpZQJQRFtGV9/0JJ6n30uwpQ==}
