@@ -11,6 +11,7 @@ export const useKeyboardHandler = (device: SCPIDevice | null) => {
 
   const handleKeyEvent = useCallback(
     async (e: KeyboardEvent, isKeyDown: boolean) => {
+      console.log(e);
       if (mode !== 'keypress' || !device) return;
       const targetKeyCommands = keyCommands.filter(kc => kc.key === e.key);
       if (!targetKeyCommands) return;
@@ -24,7 +25,7 @@ export const useKeyboardHandler = (device: SCPIDevice | null) => {
         console.error('Command send failed:', err);
       }
     },
-    [mode, device, keyCommands]
+    [mode, device, keyCommands, addCommander]
   );
 
   useEffect(() => {
