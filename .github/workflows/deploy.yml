@@ -17,7 +17,7 @@ jobs:
       - run: pnpm install && pnpm run build && pnpm run build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: example/dist
+          path: dist
           
   deploy:
     needs: build
