@@ -4,6 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { IndependentSequencer } from '@kzkymur/sequencer';
 import { useScheduleSequencer } from '../store/schedule';
 import styled from 'styled-components';
+import { useGeneralStatus } from '../store/general';
 
 const Canvas = styled.canvas`
   width: 100%;
@@ -11,6 +12,7 @@ const Canvas = styled.canvas`
 `;
 
 const ScheduleSettings = () => {
+  const { devices } = useGeneralStatus();
   const { sequencer, commands, setSequencer, addCommand, removeCommand } = useScheduleSequencer();
   const [newCommand, setNewCommand] = useState('');
   const [duration, setDuration] = useState(1000);
@@ -43,7 +45,8 @@ const ScheduleSettings = () => {
       id: `${newCommand}_${crypto.randomUUID().slice(0, 8)}`,
       command: newCommand,
       duration,
-      startTime
+      startTime,
+      deviceId: devices[0].id,
     });
 
     setNewCommand('');

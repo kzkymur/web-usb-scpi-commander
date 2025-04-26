@@ -93,7 +93,7 @@ export const useScheduleSequencer = () => {
         })
       }
     }
-  }, [sequenceStore.sequencer]);
+  }, [sequenceStore.sequencer, sequenceStore, scheduleStore.commands]);
 
   return {
     // From scheduleStore

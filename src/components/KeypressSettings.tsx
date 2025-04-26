@@ -4,12 +4,14 @@ import { useKeyboardHandler } from '../hooks/useKeyboardHandler';
 import { useGeneralStatus } from '../store/general';
 
 const KeypressSettings = () => {
-  const { device } = useGeneralStatus();
+  const { devices } = useGeneralStatus();
   const { keyCommands, setKeyCommand, removeKeyCommand } = useKeypressStore();
-  useKeyboardHandler(device);
+  useKeyboardHandler(devices[0]);
+
+  const deviceId = devices[0].id
 
   const handleAddMapping = () => {
-    setKeyCommand(crypto.randomUUID(), '', '');
+    setKeyCommand(devices[0]?.id || '', crypto.randomUUID(), '', '');
   };
 
   const handleRemoveMapping = (id: string) => {
@@ -30,7 +32,7 @@ const KeypressSettings = () => {
                 <TextField
                   label="Key"
                   value={key}
-                  onChange={(e) => setKeyCommand(id, e.target.value, command)}
+                  onChange={(e) => setKeyCommand(deviceId, id, e.target.value, command)}
                   fullWidth
                 />
               </Grid>
@@ -38,7 +40,7 @@ const KeypressSettings = () => {
                 <TextField
                   label="SCPI Command"
                   value={command}
-                  onChange={(e) => setKeyCommand(id, key, e.target.value)}
+                  onChange={(e) => setKeyCommand(deviceId, id, key, e.target.value)}
                   fullWidth
                 />
               </Grid>

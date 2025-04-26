@@ -6,14 +6,13 @@ import { useGeneralStatus } from "./store/general";
 type Commander = {
   scpi: SCPIDevice;
   cmd: string;
-  deviceId: string;
 }
 
 type State = {
   sequencer: Sequencer;
   frag: Fragment;
   commanders: Commander[];
-  addCommander: (scpi: SCPIDevice, cmd: string, deviceId: string) => void;
+  addCommander: (scpi: SCPIDevice, cmd: string) => void;
   changePitch: (pitch: number) => void;
 };
 
@@ -23,11 +22,11 @@ export const useCmdSenderWorker = create<(State)>((set, get) => {
     const commandsByDevice = new Map<string, string[]>();
 
     // Group commands by device ID
-    get().commanders.forEach(({ cmd, deviceId }) => {
-      if (!commandsByDevice.has(deviceId)) {
-        commandsByDevice.set(deviceId, []);
+    get().commanders.forEach(({ cmd, scpi }) => {
+      if (!commandsByDevice.has(scpi.id)) {
+        commandsByDevice.set(scpi.id, []);
       }
-      commandsByDevice.get(deviceId)?.push(cmd);
+      commandsByDevice.get(scpi.id)?.push(cmd);
     });
 
     // Send batched commands per device
@@ -44,10 +43,10 @@ export const useCmdSenderWorker = create<(State)>((set, get) => {
     sequencer,
     frag,
     commanders: [],
-    addCommander: (scpi, cmd, deviceId) => set({
+    addCommander: (scpi, cmd) => set({
       commanders: [
-        ...get().commanders.filter(c => c.deviceId !== deviceId), // Remove existing commands for this device
-        { scpi, cmd, deviceId } // Add new command
+        ...get().commanders.filter(c => c.scpi.id !== scpi.id), // Remove existing commands for this device
+        { scpi, cmd } // Add new command
       ]
     }),
     changePitch: (pitch) => {
