@@ -1,0 +1,33 @@
+name: deploy on github pages
+
+on:
+  push:
+    branches: 
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Tools
+        uses: asdf-vm/actions/install@v3
+      - run: npm install && npm run build && npm run build:example
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: example/dist
+          
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest 
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
