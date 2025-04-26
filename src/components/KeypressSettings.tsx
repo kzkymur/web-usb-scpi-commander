@@ -36,7 +36,7 @@ const KeypressSettings = () => {
                     value={selectedDeviceId}
                     label="Device"
                     onChange={(e) => {
-                      setKeyCommand(e.target.value, id, key, command);
+                      setKeyCommand(id, key, command, e.target.value);
                       setSelectedDeviceId(e.target.value);
                     }}
                   >
@@ -52,7 +52,7 @@ const KeypressSettings = () => {
                 <TextField
                   label="Key"
                   value={key}
-                  onChange={(e) => setKeyCommand(selectedDeviceId, id, e.target.value, command)}
+                  onChange={(e) => setKeyCommand(id, e.target.value, command, selectedDeviceId)}
                   fullWidth
                 />
               </Grid>
@@ -60,7 +60,7 @@ const KeypressSettings = () => {
                 <TextField
                   label="SCPI Command"
                   value={command}
-                  onChange={(e) => setKeyCommand(selectedDeviceId, id, key, e.target.value)}
+                  onChange={(e) => setKeyCommand(id, key, e.target.value, selectedDeviceId)}
                   fullWidth
                 />
               </Grid>
