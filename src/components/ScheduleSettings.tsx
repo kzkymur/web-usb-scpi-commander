@@ -77,7 +77,7 @@ const ScheduleSettings = () => {
             >
               {devices.map((device) => (
                 <MenuItem key={device.id} value={device.id}>
-                  {device.productName || `Device ${device.id}`}
+                  {device.usb.productName || `Device ${device.id}`}
                 </MenuItem>
               ))}
             </Select>
@@ -139,7 +139,7 @@ const ScheduleSettings = () => {
               >
                 <ListItemText
                   primary={cmd.command}
-                  secondary={`Device: ${devices.find(d => d.id === cmd.deviceId)?.productName || cmd.deviceId} | Duration: ${cmd.duration}ms | Start: ${cmd.startTime}ms`}
+                  secondary={`Device: ${devices.find(d => d.id === cmd.deviceId)?.usb.productName || cmd.deviceId} | Duration: ${cmd.duration}ms | Start: ${cmd.startTime}ms`}
                 />
               </ListItem>
             ))}

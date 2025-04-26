@@ -42,7 +42,7 @@ const KeypressSettings = () => {
                   >
                     {devices.map((device) => (
                       <MenuItem key={device.id} value={device.id}>
-                        {device.productName || `Device ${device.id}`}
+                        {device.usb.productName || `Device ${device.id}`}
                       </MenuItem>
                     ))}
                   </Select>

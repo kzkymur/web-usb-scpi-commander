@@ -52,10 +52,6 @@ export class SCPIDevice {
     throw new Error("Endpoint couldn't be detected");
   }
 
-  get productName() {
-    return this.usb.productName;
-  }
-
   get id() {
     return fnv1a32(`${fnv1a32(this.usb.productId.toString())},${fnv1a32(this.usb.vendorId.toString())}`);
   }
