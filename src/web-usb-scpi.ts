@@ -21,7 +21,7 @@ export class SCPIDevice {
   sendSCPICommand = async (cmd: string): Promise<void> => {
     if (!this.usb || this.endpointNumber === null) {
       throw new Error("endpointNumber has not been set. Please call `setup` function at first.")
-    };
+    }
     const data = new TextEncoder().encode(cmd + '\n');
     try {
       await this.usb.transferOut(this.endpointNumber, data);
@@ -55,7 +55,7 @@ export class SCPIDevice {
   get id() {
     return fnv1a32(`${fnv1a32(this.usb.productId.toString())},${fnv1a32(this.usb.vendorId.toString())}`);
   }
-};
+}
 
 export const isSameScpiDevice = (a: SCPIDevice, b: SCPIDevice) => a.id === b.id;
 
