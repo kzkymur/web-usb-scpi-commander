@@ -1,5 +1,5 @@
 import { useGeneralStatus } from '../store/general';
-import { Button, Select, MenuItem, TextField, FormControl, InputLabel, Typography } from '@mui/material';
+import { Button, Select, MenuItem, TextField, FormControl, InputLabel, Typography, Box } from '@mui/material';
 import styled from 'styled-components';
 import { connectToDevice } from '../web-usb-scpi';
 
@@ -18,14 +18,15 @@ export const SettingsPanel = () => {
     setMode,
     lifecycleSpan,
     setLifecycleSpan,
-    device,
-    setDevice,
+    devices,
+    addDevice,
+    removeDevice
   } = useGeneralStatus();
 
-  const handleConnectDevice = async () => {
+  const handleAddDevice = async () => {
     try {
       const newDevice = await connectToDevice();
-      setDevice(newDevice);
+      if (newDevice) addDevice(newDevice);
     } catch (error) {
       console.error('Device connection failed:', error);
     }
@@ -57,22 +58,29 @@ export const SettingsPanel = () => {
           inputProps={{ min: 100, max: 5000 }}
         />
 
-        {device ? (
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => setDevice(null)}
-          >
-            Disconnect {device.device.productName}
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            onClick={handleConnectDevice}
-          >
-            Connect USB Device
-          </Button>
-        )}
+        <Button
+          variant="contained"
+          onClick={handleAddDevice}
+          sx={{ mb: 2 }}
+        >
+          Add USB Device
+        </Button>
+
+        {devices.map(device => (
+          <Box key={device.id} sx={{ display: 'flex', gap: 1, mb: 1 }}>
+            <Typography sx={{ flexGrow: 1 }}>
+              {device.usb.productName || `Device ${device.id}`}
+            </Typography>
+            <Button
+              variant="outlined"
+              color="error"
+              size="small"
+              onClick={() => removeDevice(device.id)}
+            >
+              Remove
+            </Button>
+          </Box>
+        ))}
       </Section>
     </>
   );

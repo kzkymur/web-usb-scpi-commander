@@ -1,6 +1,6 @@
-import { SCPIDevice } from "web-usb-scpi";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { isSameScpiDevice, SCPIDevice } from "../web-usb-scpi";
 
 type Mode = "keypress" | "schedule";
 
@@ -8,10 +8,11 @@ type Status = {
   sidebarWidth: number;
   mode: Mode;
   lifecycleSpan: number;
-  device: SCPIDevice | null;
+  devices: SCPIDevice[];
   setMode: (mode: Mode) => void;
   setLifecycleSpan: (span: number) => void;
-  setDevice: (device: SCPIDevice | null) => void;
+  addDevice: (device: SCPIDevice) => void;
+  removeDevice: (deviceId: string) => void;
 };
 
 export const useGeneralStatus = create<Status>()(
@@ -20,11 +21,15 @@ export const useGeneralStatus = create<Status>()(
       sidebarWidth: 300,
       mode: "keypress",
       lifecycleSpan: 500,
-      device: null,
-      keyCommandMap: {},
+      devices: [],
       setMode: (mode) => set({ mode }),
       setLifecycleSpan: (lifecycleSpan) => set({ lifecycleSpan }),
-      setDevice: (device) => set({ device }),
+      addDevice: (device) => set((state) => ({
+        devices: [...state.devices.filter(d => !isSameScpiDevice(d, device)), device]
+      })),
+      removeDevice: (deviceId) => set((state) => ({
+        devices: state.devices.filter(d => d.id !== deviceId)
+      })),
     }),
     {
       name: "general-storage",

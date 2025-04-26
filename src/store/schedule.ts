@@ -1,14 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { IndependentSequencer, IndependentFragment } from '@kzkymur/sequencer';
-import { SCPIDevice } from 'web-usb-scpi';
 import { useEffect } from 'react';
+import { useGeneralStatus } from './general';
 
 type Command = {
   id: string;
   command: string;
   duration: number;
   startTime: number;
+  deviceId: string;
 }
 
 interface ScheduleState {
@@ -38,26 +39,27 @@ export const useScheduleStore = create<ScheduleState>()(
 interface ScheduleSequencerState {
   sequencer: IndependentSequencer | null;
   fragments: IndependentFragment[];
-  device: SCPIDevice | null;
+  deviceId: string | null;
   setSequencer: (sequencer: IndependentSequencer | null) => void;
   addCommand: (command: Command) => void;
   removeCommand: (id: string) => void;
-  setDevice: (device: SCPIDevice | null) => void;
+  setDeviceId: (deviceId: string | null) => void;
 }
 
 export const useScheduleSequencerStore = create<ScheduleSequencerState>()((set, get) => ({
   sequencer: null,
   commands: [],
   fragments: [],
-  device: null,
+  deviceId: null,
   setSequencer: (sequencer) => set({ sequencer }),
   addCommand: (command) => {
-    const { sequencer, device } = get();
+    const { sequencer } = get();
+    const device = useGeneralStatus.getState().devices.find(d => d.id === command.deviceId);
     if (sequencer === null) {
       throw new Error("Sequencer has not been set.");
     }
     const frag = new IndependentFragment(command.id, command.duration, command.startTime, () => {
-      device?.sendSCPICommand(command.command);
+      device?.sendSCPICommand(command.command).catch(console.error);
     })
     sequencer.push(frag);
     set((state) => ({ fragments: [...state.fragments, frag] }));
@@ -74,7 +76,7 @@ export const useScheduleSequencerStore = create<ScheduleSequencerState>()((set, 
     set((state) => ({ fragments: state.fragments.filter(f => f.getName() !== id) }));
     sequencer.remove(frag);
   },
-  setDevice: (device) => set({ device })
+  setDeviceId: (deviceId) => set({ deviceId })
 }));
 
 export const useScheduleSequencer = () => {
@@ -100,9 +102,9 @@ export const useScheduleSequencer = () => {
     // From sequenceStore
     sequencer: sequenceStore.sequencer,
     fragments: sequenceStore.fragments,
-    device: sequenceStore.device,
+    deviceId: sequenceStore.deviceId,
     setSequencer: sequenceStore.setSequencer,
-    setDevice: sequenceStore.setDevice,
+    setDeviceId: sequenceStore.setDeviceId,
 
     // Unified methods
     addCommand: (command: Command) => {
