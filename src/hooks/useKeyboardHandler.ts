@@ -1,31 +1,31 @@
 import { useEffect, useCallback } from 'react';
-import type { SCPIDevice } from '../web-usb-scpi';
 import { useKeypressStore } from '../store/keypress';
 import { useGeneralStatus } from '../store/general';
 import { useCmdSenderWorker } from '../command-sender-worker';
 
-export const useKeyboardHandler = (device: SCPIDevice | null) => {
-  const { mode } = useGeneralStatus();
+export const useKeyboardHandler = () => {
+  const { mode, devices } = useGeneralStatus();
   const { keyCommands } = useKeypressStore();
   const { addCommander } = useCmdSenderWorker();
 
   const handleKeyEvent = useCallback(
     async (e: KeyboardEvent, isKeyDown: boolean) => {
       console.log(e);
-      if (mode !== 'keypress' || !device) return;
+      if (mode !== 'keypress') return;
       const targetKeyCommands = keyCommands.filter(kc => kc.key === e.key);
       if (!targetKeyCommands) return;
 
       try {
         if (!isKeyDown) return;
         targetKeyCommands.forEach(tkc => {
-          addCommander(device, tkc.command);
+          const d = devices.find(d => d.id === tkc.deviceId);
+          if (d) addCommander(d, tkc.command);
         })
       } catch (err) {
         console.error('Command send failed:', err);
       }
     },
-    [mode, device, keyCommands, addCommander]
+    [mode, devices, keyCommands, addCommander]
   );
 
   useEffect(() => {

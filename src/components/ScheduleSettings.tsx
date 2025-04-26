@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button, Grid, TextField, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
+import { Button, Grid, TextField, Typography, List, ListItem, ListItemText, IconButton, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IndependentSequencer } from '@kzkymur/sequencer';
 import { useScheduleSequencer } from '../store/schedule';
@@ -17,6 +17,7 @@ const ScheduleSettings = () => {
   const [newCommand, setNewCommand] = useState('');
   const [duration, setDuration] = useState(1000);
   const [startTime, setStartTime] = useState(0);
+  const [selectedDeviceId, setSelectedDeviceId] = useState(devices[0]?.id || '');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [ctx2d, setCtx2d] = useState<CanvasRenderingContext2D | null>(null);
 
@@ -46,7 +47,7 @@ const ScheduleSettings = () => {
       command: newCommand,
       duration,
       startTime,
-      deviceId: devices[0].id,
+      deviceId: selectedDeviceId,
     });
 
     setNewCommand('');
@@ -66,7 +67,23 @@ const ScheduleSettings = () => {
       <Canvas ref={canvasRef} />
 
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
+          <FormControl fullWidth>
+            <InputLabel>Device</InputLabel>
+            <Select
+              value={selectedDeviceId}
+              label="Device"
+              onChange={(e) => setSelectedDeviceId(e.target.value)}
+            >
+              {devices.map((device) => (
+                <MenuItem key={device.id} value={device.id}>
+                  {device.productName || `Device ${device.id}`}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={3}>
           <TextField
             label="SCPI Command"
             value={newCommand}
@@ -122,7 +139,7 @@ const ScheduleSettings = () => {
               >
                 <ListItemText
                   primary={cmd.command}
-                  secondary={`Duration: ${cmd.duration}ms | Start: ${cmd.startTime}ms`}
+                  secondary={`Device: ${devices.find(d => d.id === cmd.deviceId)?.productName || cmd.deviceId} | Duration: ${cmd.duration}ms | Start: ${cmd.startTime}ms`}
                 />
               </ListItem>
             ))}
