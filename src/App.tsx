@@ -33,7 +33,7 @@ function App() {
   return (
     <Container id="main-container">
       <Header>
-        <Title>LED Operator</Title>
+        <Title>USB-SCPI Commander</Title>
       </Header>
 
       <Layout>

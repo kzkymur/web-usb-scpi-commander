@@ -57,11 +57,11 @@ export const useScheduleSequencerStore = create<ScheduleSequencerState>()((set, 
   setSequencer: (sequencer) => set({ sequencer }),
   addCommand: (command) => {
     const { sequencer } = get();
-    const device = useGeneralStatus.getState().devices.find(d => d.id === command.deviceId);
     if (sequencer === null) {
       throw new Error("Sequencer has not been set.");
     }
     const frag = new IndependentFragment(command.id, command.duration, command.startTime, () => {
+      const device = useGeneralStatus.getState().devices.find(d => d.id === command.deviceId);
       device?.sendSCPICommand(command.command).catch(console.error);
     })
     sequencer.push(frag);
