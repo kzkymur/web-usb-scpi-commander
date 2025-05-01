@@ -13,7 +13,7 @@ const Canvas = styled.canvas`
 
 const ScheduleSettings = () => {
   const { devices } = useGeneralStatus();
-  const { sequencer, commands, setSequencer, addCommand, removeCommand } = useScheduleSequencer();
+  const { sequencer, commands, setSequencer, addCommand, removeCommand, loop, toggleLoop } = useScheduleSequencer();
   const [newCommand, setNewCommand] = useState('');
   const [duration, setDuration] = useState(1000);
   const [startTime, setStartTime] = useState(0);
@@ -150,6 +150,15 @@ const ScheduleSettings = () => {
         <Grid item xs={4}>
           <Button
             variant="contained"
+            color={loop ? 'success' : 'primary'}
+            onClick={toggleLoop}
+            fullWidth
+            sx={{ mb: 2 }}
+          >
+            Loop: {loop ? 'On' : 'Off'}
+          </Button>
+          <Button
+            variant="contained"
             color="success"
             onClick={handleStart}
             fullWidth
@@ -162,6 +171,7 @@ const ScheduleSettings = () => {
             color="error"
             onClick={handleStop}
             fullWidth
+            sx={{ mb: 2 }}
           >
             Stop Sequence
           </Button>

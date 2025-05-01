@@ -40,10 +40,12 @@ interface ScheduleSequencerState {
   sequencer: IndependentSequencer | null;
   fragments: IndependentFragment[];
   deviceId: string | null;
+  loop: boolean;
   setSequencer: (sequencer: IndependentSequencer | null) => void;
   addCommand: (command: Command) => void;
   removeCommand: (id: string) => void;
   setDeviceId: (deviceId: string | null) => void;
+  toggleLoop: () => void;
 }
 
 export const useScheduleSequencerStore = create<ScheduleSequencerState>()((set, get) => ({
@@ -51,6 +53,7 @@ export const useScheduleSequencerStore = create<ScheduleSequencerState>()((set, 
   commands: [],
   fragments: [],
   deviceId: null,
+  loop: false,
   setSequencer: (sequencer) => set({ sequencer }),
   addCommand: (command) => {
     const { sequencer } = get();
@@ -76,7 +79,12 @@ export const useScheduleSequencerStore = create<ScheduleSequencerState>()((set, 
     set((state) => ({ fragments: state.fragments.filter(f => f.getName() !== id) }));
     sequencer.remove(frag);
   },
-  setDeviceId: (deviceId) => set({ deviceId })
+  setDeviceId: (deviceId) => set({ deviceId }),
+  toggleLoop: () => set((state) => {
+    const newLoop = !state.loop;
+    state.sequencer?.setLoopFlag(newLoop);
+    return { loop: newLoop };
+  })
 }));
 
 export const useScheduleSequencer = () => {
@@ -85,7 +93,7 @@ export const useScheduleSequencer = () => {
 
   useEffect(() => {
     if (!sequenceStore.sequencer) {
-      sequenceStore.setSequencer(new IndependentSequencer(100, 1.0, false));
+      sequenceStore.setSequencer(new IndependentSequencer(100, 1.0, sequenceStore.loop));
 
       if (scheduleStore.commands.length) {
         scheduleStore.commands.forEach(c => {
@@ -105,6 +113,8 @@ export const useScheduleSequencer = () => {
     deviceId: sequenceStore.deviceId,
     setSequencer: sequenceStore.setSequencer,
     setDeviceId: sequenceStore.setDeviceId,
+    loop: sequenceStore.loop,
+    toggleLoop: sequenceStore.toggleLoop,
 
     // Unified methods
     addCommand: (command: Command) => {
