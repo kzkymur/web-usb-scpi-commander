@@ -57,6 +57,7 @@ const ScheduleSettings = () => {
 
   const handleStart = () => sequencer?.play();
   const handleStop = () => sequencer?.stop();
+  const handleRestart = () => sequencer?.replay();
 
   return (
     <div>
@@ -163,6 +164,14 @@ const ScheduleSettings = () => {
             fullWidth
           >
             Stop Sequence
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleRestart}
+            fullWidth
+          >
+            Restart Sequence
           </Button>
         </Grid>
       </Grid>

@@ -61,8 +61,7 @@ export const isSameScpiDevice = (a: SCPIDevice, b: SCPIDevice) => a.id === b.id;
 
 export const connectToDevice = async (): Promise<SCPIDevice | null> => {
   try {
-    const filters = [{ vendorId: 0x1234, productId: 0x0001 }]; // 実機値に合わせて
-    const usb = await navigator.usb.requestDevice({ filters });
+    const usb = await navigator.usb.requestDevice({ filters: [] });
     const scpi = new SCPIDevice(usb);
     await scpi.setup();
     return scpi;

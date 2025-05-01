@@ -2,7 +2,7 @@
 
 ## Site
 
-Open this [site](https://kzkymur.github.io/web-usb-serial-commander/) with Google Chrome.
+Open [this site](https://kzkymur.github.io/web-usb-serial-commander/) with Google Chrome.
 
 ## about
 
@@ -18,7 +18,7 @@ A Single Page Application (SPA) that communicates with USB devices using SCPI pr
 - TypeScript, React, Vite
 - Zustand for state management
 - Web USB API for device communication
-- @kzkymur/sequencer for command scheduling
+- [@kzkymur/sequencer](https://www.npmjs.com/package/@kzkymur/sequencer) for command scheduling
 
 ### Core Components
 - Device connection handling (web-usb-scpi.ts)
