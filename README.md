@@ -1,6 +1,6 @@
 # web-usb-scpi-commander
 
-!["main-visual"]("https://raw.githubusercontent.com/kzkymur/web-usb-serial-commander/refs/heads/main/public/main-visual.png")
+<img width="1251" alt="main-visual" src="https://github.com/user-attachments/assets/5c625c77-cd15-4d7c-b09a-03e1c43c12a4" />
 
 ## Site
 
