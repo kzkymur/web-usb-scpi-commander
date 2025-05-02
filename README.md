@@ -4,7 +4,7 @@
 
 ## Site
 
-Open [this site](https://kzkymur.github.io/web-usb-serial-commander/) with Google Chrome.
+Open [this site](https://kzkymur.github.io/web-usb-scpi-commander/) with Google Chrome.
 
 ## about
 
