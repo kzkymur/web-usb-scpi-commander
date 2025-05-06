@@ -78,13 +78,6 @@
 - This file has a minimum function-set to handle USB Devices.
 - You can get a SCPIDevice object via calling `connectToDevice` function and send SCPI Command.
 
-### `src/command-sender-worker.ts`
-
-- This file provides command-sending lifecycle.
-- Concretely, you can set some commands to send next lifecycle event through SCPIDevice interface.
-- Each modes, keypress mode and schedule mode, use this `addCommander` method to operate USB devices.
-  - The only deference is the timing to call the method.
-
 ## UI Design
 
 - Due to the character of this application, only the PC layout needs to be considered, and we expect a UI that is not just a web service, but rather a management screen, where the layout is not corrupted and the arrangement does not change depending on the state of the application.

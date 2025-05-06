@@ -1,12 +1,10 @@
 import { useEffect, useCallback } from 'react';
 import { useKeypressStore } from '../store/keypress';
 import { useGeneralStatus } from '../store/general';
-import { useCmdSenderWorker } from '../command-sender-worker';
 
 export const useKeyboardHandler = () => {
   const { mode, devices } = useGeneralStatus();
   const { keyCommands } = useKeypressStore();
-  const { addCommander } = useCmdSenderWorker();
 
   const handleKeyEvent = useCallback(
     async (e: KeyboardEvent, isKeyDown: boolean) => {
@@ -19,13 +17,13 @@ export const useKeyboardHandler = () => {
         if (!isKeyDown) return;
         targetKeyCommands.forEach(tkc => {
           const d = devices.find(d => d.id === tkc.deviceId);
-          if (d) addCommander(d, tkc.command);
+          d?.sendSCPICommand(tkc.command).catch(console.error);
         })
       } catch (err) {
         console.error('Command send failed:', err);
       }
     },
-    [mode, devices, keyCommands, addCommander]
+    [mode, devices, keyCommands]
   );
 
   useEffect(() => {
