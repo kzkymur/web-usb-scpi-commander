@@ -11,6 +11,34 @@ const fnv1a32 = (str: string) => {
   return (hash >>> 0).toString(16);
 }
 
+export type SCPICommandSentEvent = Readonly<{
+  sentAt: number;
+  deviceId: string;
+  deviceName: string;
+  command: string;
+}>;
+
+type SCPICommandSentListener = (event: SCPICommandSentEvent) => void;
+
+const scpiCommandSentListeners = new Set<SCPICommandSentListener>();
+
+export const subscribeToSCPICommandSent = (listener: SCPICommandSentListener) => {
+  scpiCommandSentListeners.add(listener);
+  return () => {
+    scpiCommandSentListeners.delete(listener);
+  };
+};
+
+const notifySCPICommandSent = (event: SCPICommandSentEvent) => {
+  scpiCommandSentListeners.forEach((listener) => {
+    try {
+      listener(event);
+    } catch (error) {
+      console.error('SCPI command listener failed:', error);
+    }
+  });
+};
+
 export class SCPIDevice {
   usb: USBDevice;
   endpointNumber: number | null = null;
@@ -23,8 +51,15 @@ export class SCPIDevice {
       throw new Error("endpointNumber has not been set. Please call `setup` function at first.")
     }
     const data = new TextEncoder().encode(cmd + '\n');
+    const sentAt = Date.now();
     try {
       await this.usb.transferOut(this.endpointNumber, data);
+      notifySCPICommandSent({
+        sentAt,
+        deviceId: this.id,
+        deviceName: this.usb.productName || `Device ${this.id}`,
+        command: cmd,
+      });
       console.log(`Sent: ${cmd}`);
     } catch (err) {
       console.error('transferOut error:', err);

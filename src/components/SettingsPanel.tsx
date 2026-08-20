@@ -2,6 +2,7 @@ import { useGeneralStatus } from '../store/general';
 import { Button, Select, MenuItem, TextField, FormControl, InputLabel, Typography, Box } from '@mui/material';
 import styled from 'styled-components';
 import { connectToDevice } from '../web-usb-scpi';
+import RecordingControls from './RecordingControls';
 
 const Section = styled.div`
   display: flex;
@@ -82,6 +83,7 @@ export const SettingsPanel = () => {
           </Box>
         ))}
       </Section>
+      <RecordingControls />
     </>
   );
 };

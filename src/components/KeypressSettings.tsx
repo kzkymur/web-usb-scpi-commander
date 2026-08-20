@@ -2,17 +2,14 @@ import { Button, TextField, Grid, Typography, Select, MenuItem, InputLabel, Form
 import { useKeypressStore } from '../store/keypress';
 import { useKeyboardHandler } from '../hooks/useKeyboardHandler';
 import { useGeneralStatus } from '../store/general';
-import { useState } from 'react';
 
 const KeypressSettings = () => {
   const { devices } = useGeneralStatus();
   const { keyCommands, setKeyCommand, removeKeyCommand } = useKeypressStore();
   useKeyboardHandler();
 
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string>("");
-
   const handleAddMapping = () => {
-    setKeyCommand(crypto.randomUUID(), '', '', selectedDeviceId);
+    setKeyCommand(crypto.randomUUID(), '', '', devices[0]?.id ?? '');
   };
 
   const handleRemoveMapping = (id: string) => {
@@ -26,19 +23,16 @@ const KeypressSettings = () => {
       </Typography>
 
       <Grid container spacing={2}>
-        {keyCommands.map(({ id, key, command }) => (
+        {keyCommands.map(({ id, key, command, deviceId }) => (
           <Grid item xs={12} key={id}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={3}>
                 <FormControl fullWidth>
                   <InputLabel>Device</InputLabel>
                   <Select
-                    value={selectedDeviceId}
+                    value={deviceId}
                     label="Device"
-                    onChange={(e) => {
-                      setKeyCommand(id, key, command, e.target.value);
-                      setSelectedDeviceId(e.target.value);
-                    }}
+                    onChange={(e) => setKeyCommand(id, key, command, e.target.value)}
                   >
                     {devices.map((device) => (
                       <MenuItem key={device.id} value={device.id}>
@@ -52,7 +46,7 @@ const KeypressSettings = () => {
                 <TextField
                   label="Key"
                   value={key}
-                  onChange={(e) => setKeyCommand(id, e.target.value, command, selectedDeviceId)}
+                  onChange={(e) => setKeyCommand(id, e.target.value, command, deviceId)}
                   fullWidth
                 />
               </Grid>
@@ -60,7 +54,7 @@ const KeypressSettings = () => {
                 <TextField
                   label="SCPI Command"
                   value={command}
-                  onChange={(e) => setKeyCommand(id, key, e.target.value, selectedDeviceId)}
+                  onChange={(e) => setKeyCommand(id, key, e.target.value, deviceId)}
                   fullWidth
                 />
               </Grid>

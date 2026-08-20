@@ -13,6 +13,7 @@ A Single Page Application (SPA) that communicates with USB devices using SCPI pr
 ### Key Features
 - USB Device selection interface
 - Two operation modes: Keypress and Schedule
+- Cross-mode SCPI command event recording to CSV
 - Configuration persistence through localStorage
 - Built with modern web technologies
 
