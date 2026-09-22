@@ -2,7 +2,7 @@ name: deploy on github pages
 
 on:
   push:
-    branches: 
+    branches:
       - 'main'
   workflow_dispatch:
 
@@ -11,17 +11,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup Tools
-        uses: asdf-vm/actions/install@v3
-      - run: pnpm install && pnpm run build && pnpm run build
-      - uses: actions/upload-pages-artifact@v3
+        uses: actions/checkout@v7
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 8.15.5
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .tool-versions
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm run build
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
-          
+
   deploy:
     needs: build
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -29,5 +39,5 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v5
         id: deployment
